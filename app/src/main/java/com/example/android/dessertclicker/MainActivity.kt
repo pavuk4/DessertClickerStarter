@@ -42,16 +42,9 @@ class MainActivity : AppCompatActivity() {
     // Contains all the views
     private lateinit var binding: ActivityMainBinding
 
-    /** Dessert Data **/
-
-    /**
-     * Simple data class that represents a dessert. Includes the resource id integer associated with
-     * the image, the price it's sold for, and the startProductionAmount, which determines when
-     * the dessert starts to be produced.
-     */
     data class Dessert(val imageId: Int, val price: Int, val startProductionAmount: Int)
 
-    // Create a list of all desserts, in order of when they start being produced
+    // All Desserts
     private val allDesserts = listOf(
             Dessert(R.drawable.cupcake, 5, 0),
             Dessert(R.drawable.donut, 10, 5),
@@ -74,18 +67,15 @@ class MainActivity : AppCompatActivity() {
 
         Timber.i("onCreate called")
 
-        // Use Data Binding to get reference to the views
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.dessertButton.setOnClickListener {
             onDessertClicked()
         }
 
-        // Setup dessertTimer, passing in the lifecycle
+
         dessertTimer = DessertTimer(this.lifecycle)
 
-        // If there is a savedInstanceState bundle, then you're "restarting" the activity
-        // If there isn't a bundle, then it's a "fresh" start
         if (savedInstanceState != null) {
             revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
             dessertsSold = savedInstanceState.getInt(KEY_DESSERT_SOLD, 0)
@@ -95,11 +85,9 @@ class MainActivity : AppCompatActivity() {
             showCurrentDessert()
         }
 
-        // Set the TextViews to the right values
         binding.revenue = revenue
         binding.amountSold = dessertsSold
 
-        // Make sure the correct dessert is showing
         binding.dessertButton.setImageResource(currentDessert.imageId)
     }
 
@@ -142,9 +130,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Menu methods
-     */
+    /**Menu methods*/
     private fun onShare() {
         val shareIntent = ShareCompat.IntentBuilder.from(this)
                 .setText(getString(R.string.share_text, dessertsSold, revenue))
@@ -180,6 +166,7 @@ class MainActivity : AppCompatActivity() {
         outState.putInt(KEY_DESSERT_SOLD, dessertsSold)
         outState.putInt(KEY_TIMER_SECONDS, dessertTimer.secondsCount)
     }
+
 
     /** Lifecycle Methods **/
     override fun onStart() {
