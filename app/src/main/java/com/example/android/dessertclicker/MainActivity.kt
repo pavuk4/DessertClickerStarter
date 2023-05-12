@@ -169,6 +169,7 @@ class MainActivity : AppCompatActivity() {
 
 
     /** Lifecycle Methods **/
+
     override fun onStart() {
         super.onStart()
 
